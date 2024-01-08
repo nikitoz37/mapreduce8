@@ -10,6 +10,7 @@ from flask import (
     make_response, 
     jsonify
 ) 
+import requests
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import insert
 import asyncio
@@ -130,6 +131,12 @@ def master_info():
 '''@app.route('/add', methods=['GET'])
 def add():
     return make_response(jsonify({'message': 'test route'}), 200)'''
+
+
+@app.route('/test', methods=['GET'])
+def test():
+    resp = requests.get('http://0.0.0.0:8001/')
+    return resp.text
 
 
 @app.route('/master/run', methods=['GET'])
