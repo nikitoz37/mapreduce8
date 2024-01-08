@@ -59,12 +59,12 @@ def index():
 '''
 
 
-@app.route('/info')
+@app.route('/')
 def slave_info():
     return 'Hello, I am slave-container!'
 
 
-@app.route('/run', methods=['POST'])
+@app.route('/slave/run', methods=['POST'])
 def slave_run():
     json_data = request.get_json()
     url_list = []

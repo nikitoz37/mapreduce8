@@ -22,8 +22,8 @@ import aiohttp
 URL_TXT = 'urls.txt'
 SLAVES_COUNT = 2
 SLAVES_ADDRESS = (
-    'http://127.0.0.1:8001/run',
-    'http://127.0.0.1:8002/run',
+    'http://0.0.0.0:8001/slave/run',
+    'http://0.0.0.0:8002/slave/run',
 )
 CACHE_SIZE = 1000
 
@@ -121,7 +121,7 @@ async def main(work_list) -> list:
 # ----------------------------------------------------------
 
 
-@app.route('/info', methods=['GET'])
+@app.route('/', methods=['GET'])
 def master_info():
     return 'Hello, I am master-container!'
     #return make_response(jsonify({'message': 'test route'}), 200)
@@ -132,7 +132,7 @@ def add():
     return make_response(jsonify({'message': 'test route'}), 200)'''
 
 
-@app.route('/run', methods=['GET'])
+@app.route('/master/run', methods=['GET'])
 def index():
     cache = {}
     work_list = []
