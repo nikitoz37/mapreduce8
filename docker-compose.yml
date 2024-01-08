@@ -1,0 +1,58 @@
+version: '3'
+ 
+services:
+  db:
+    container_name: db
+    restart: always
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: top_words_db
+    volumes:
+      - pgdata:/var/lib/postgresql
+    #  - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  master:
+    container_name: master
+    restart: always
+    build: 
+      context: ./master
+      dockerfile: master.Dockerfile
+    environment:
+      DB_URL: postgresql://postgres:postgres@db:5432/top_words_db
+    ports:
+      - "8000:5000"
+    depends_on:
+      - db
+      - slave1
+      - slave2
+
+  slave1:
+    container_name: slave1
+    restart: always
+    build: 
+      context: ./slave
+      dockerfile: slave1.Dockerfile
+    environment:
+      FLASK_DEBUG: "true"
+    ports:
+      - "8001:5000"
+
+  slave2:
+    container_name: slave2
+    restart: always
+    build: 
+      context: ./slave
+      dockerfile: slave2.Dockerfile
+    environment:
+      FLASK_DEBUG: "true"
+    ports:
+      - "8002:5000"
+
+
+volumes:
+  pgdata: {}
+
